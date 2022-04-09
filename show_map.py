@@ -18,9 +18,10 @@ CASTED_RAYS = 120
 STEP = FOV / CASTED_RAYS
 MAX_DEPTH = 900
 TILE_SIZE = 50
+SCALE = (WN_SIZE[0] / 2) / CASTED_RAYS
 
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 144
 
 grid = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
@@ -52,7 +53,7 @@ def cast_ray():
     start_angle = angle - HALF_FOV
     
     for ray in range(CASTED_RAYS):
-        for depth in range(0, MAX_DEPTH):
+        for depth in range(1, MAX_DEPTH):
             target_x = x + (depth * math.cos(start_angle))
             target_y = y + (depth * math.sin(start_angle))
             
@@ -77,8 +78,11 @@ def cast_ray():
                                             TILE_SIZE,
                                             TILE_SIZE))
                 
-                target_x = 0
-                target_y = 0
+                wall_height = 21000 / (depth + 0.000001)
+                color = 255 / (1 + depth * depth * 0.00005)
+                
+                pygame.draw.rect(wn, (color, color, color), (600 + ray * SCALE, (WN_SIZE[1] / 2) - wall_height / 2, SCALE, wall_height))
+                
                 break
 
     
@@ -88,7 +92,7 @@ def cast_ray():
 run = True
 while run:
     clock.tick(FPS)
-    pygame.display.set_caption(str(clock.get_fps()) + ' FPS')
+    pygame.display.set_caption(str(round(clock.get_fps())) + ' FPS')
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
