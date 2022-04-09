@@ -79,7 +79,7 @@ def cast_ray():
                                             TILE_SIZE))
                 
                 wall_height = 21000 / (depth + 0.000001)
-                color = 255 / (1 + depth * depth * 0.00005)
+                color = 255 / (1 + depth * depth * 0.00003)
                 
                 pygame.draw.rect(wn, (color, color, color), (600 + ray * SCALE, (WN_SIZE[1] / 2) - wall_height / 2, SCALE, wall_height))
                 
